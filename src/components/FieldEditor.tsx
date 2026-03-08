@@ -74,7 +74,7 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({
             value={(fieldValue as string) || ""}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
             placeholder={field.placeholder}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical min-h-[100px]"
+            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-gray-200 placeholder-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 resize-vertical min-h-[100px] transition-colors"
             rows={4}
           />
         );
@@ -92,13 +92,13 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({
                     handleArrayItemChange(field.key, index, e.target.value)
                   }
                   placeholder={field.placeholder}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 text-gray-200 placeholder-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 transition-colors"
                 />
                 {arrayValue.length > 1 && (
                   <button
                     type="button"
                     onClick={() => handleArrayRemove(field.key, index)}
-                    className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                    className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -108,7 +108,7 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({
             <button
               type="button"
               onClick={() => handleArrayAdd(field.key)}
-              className="flex items-center space-x-2 px-3 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-md transition-colors"
+              className="flex items-center space-x-2 px-3 py-2 text-violet-400 hover:text-violet-300 hover:bg-violet-500/10 rounded-lg transition-colors"
             >
               <Plus className="w-4 h-4" />
               <span>Add {field.label}</span>
@@ -142,20 +142,19 @@ export const FieldEditor: React.FC<FieldEditorProps> = ({
             value={(fieldValue as string) || ""}
             onChange={(e) => handleFieldChange(field.key, e.target.value)}
             placeholder={field.placeholder}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-gray-200 placeholder-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 transition-colors"
           />
         );
     }
   };
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-lg font-semibold text-gray-800">Edit Fields</h2>
+    <div className="space-y-5">
       {fields.map((field) => (
-        <div key={field.key} className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
+        <div key={field.key} className="space-y-1.5">
+          <label className="block text-sm font-medium text-gray-300">
             {field.label}
-            {field.required && <span className="text-red-500 ml-1">*</span>}
+            {field.required && <span className="text-red-400 ml-1">*</span>}
           </label>
           {renderField(field)}
         </div>
