@@ -1,22 +1,21 @@
-import React, { useState, useRef } from 'react';
 import {
-  Upload,
-  FileText,
-  CheckCircle2,
   AlertCircle,
-  Sparkles,
-  TrendingUp,
-  User,
-  Briefcase,
-  GraduationCap,
-  Code2,
-  Star,
-  X,
-  ChevronRight,
-  BarChart3,
-  Lightbulb,
   ArrowUpRight,
+  BarChart3,
+  Briefcase,
+  CheckCircle2,
+  ChevronRight,
+  Code2,
+  FileText,
+  GraduationCap,
+  Lightbulb,
+  Sparkles,
+  Star,
+  TrendingUp,
+  Upload,
+  X,
 } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 
 interface Suggestion {
   id: string;
@@ -131,11 +130,10 @@ const ResumeParser: React.FC = () => {
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
             onDragLeave={() => setIsDragging(false)}
             onClick={() => fileInputRef.current?.click()}
-            className={`relative flex flex-col items-center justify-center gap-5 py-20 rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-200 ${
-              isDragging
+            className={`relative flex flex-col items-center justify-center gap-5 py-20 rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-200 ${isDragging
                 ? 'border-violet-500 bg-violet-500/5'
                 : 'border-gray-700 bg-gray-900 hover:border-violet-600/60 hover:bg-violet-500/5'
-            }`}
+              }`}
           >
             <input
               ref={fileInputRef}
@@ -144,9 +142,8 @@ const ResumeParser: React.FC = () => {
               className="hidden"
               onChange={handleInputChange}
             />
-            <div className={`w-20 h-20 rounded-2xl flex items-center justify-center transition-all ${
-              isDragging ? 'bg-violet-500/20' : 'bg-gray-800'
-            }`}>
+            <div className={`w-20 h-20 rounded-2xl flex items-center justify-center transition-all ${isDragging ? 'bg-violet-500/20' : 'bg-gray-800'
+              }`}>
               <Upload className={`w-9 h-9 transition-colors ${isDragging ? 'text-violet-400' : 'text-gray-500'}`} />
             </div>
             <div className="text-center">
@@ -342,10 +339,9 @@ const ResumeParser: React.FC = () => {
               {visibleSuggestions.map((s) => (
                 <div
                   key={s.id}
-                  className={`bg-gray-900 border rounded-xl p-4 transition-all ${
-                    s.type === 'error' ? 'border-red-900/50' :
-                    s.type === 'warning' ? 'border-amber-900/50' : 'border-gray-800'
-                  }`}
+                  className={`bg-gray-900 border rounded-xl p-4 transition-all ${s.type === 'error' ? 'border-red-900/50' :
+                      s.type === 'warning' ? 'border-amber-900/50' : 'border-gray-800'
+                    }`}
                 >
                   <div className="flex items-start gap-3">
                     {suggestionIcon(s.type)}
