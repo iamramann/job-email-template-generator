@@ -1,13 +1,15 @@
-import React from 'react';
 import {
+  Bot,
+  Briefcase,
+  ChevronRight,
+  FileSearch,
+  Home,
   LayoutDashboard,
   Mail,
-  Briefcase,
-  FileSearch,
   Sparkles,
-  ChevronRight,
-  Bot,
 } from 'lucide-react';
+import React from 'react';
+import { useUsage } from '../hooks/useUsage';
 
 export type Page = 'dashboard' | 'email-templates' | 'auto-apply' | 'resume-parser';
 
@@ -28,9 +30,11 @@ const navItems: NavItem[] = [
 interface SidebarProps {
   activePage: Page;
   onNavigate: (page: Page) => void;
+  onHome: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activePage, onNavigate }) => {
+const Sidebar: React.FC<SidebarProps> = ({ activePage, onNavigate, onHome }) => {
+  const { usage } = useUsage();
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-gray-950 flex flex-col z-20 border-r border-gray-800">
       {/* Logo */}
@@ -65,24 +69,21 @@ const Sidebar: React.FC<SidebarProps> = ({ activePage, onNavigate }) => {
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-200 group ${
-                isActive
-                  ? 'bg-gradient-to-r from-violet-600/20 to-indigo-600/20 border border-violet-700/40 text-white'
-                  : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/60'
-              }`}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-200 group ${isActive
+                ? 'bg-gradient-to-r from-violet-600/20 to-indigo-600/20 border border-violet-700/40 text-white'
+                : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/60'
+                }`}
             >
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200 ${
-                isActive
-                  ? 'bg-gradient-to-br from-violet-500 to-indigo-600 shadow-md shadow-violet-900/50'
-                  : 'bg-gray-800 group-hover:bg-gray-700'
-              }`}>
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200 ${isActive
+                ? 'bg-gradient-to-br from-violet-500 to-indigo-600 shadow-md shadow-violet-900/50'
+                : 'bg-gray-800 group-hover:bg-gray-700'
+                }`}>
                 <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-gray-300'}`} />
               </div>
               <span className="flex-1 font-medium text-sm">{item.label}</span>
               {item.badge && (
-                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
-                  isActive ? 'bg-violet-500/30 text-violet-300' : 'bg-gray-800 text-gray-500'
-                }`}>
+                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${isActive ? 'bg-violet-500/30 text-violet-300' : 'bg-gray-800 text-gray-500'
+                  }`}>
                   {item.badge}
                 </span>
               )}
@@ -93,14 +94,26 @@ const Sidebar: React.FC<SidebarProps> = ({ activePage, onNavigate }) => {
       </nav>
 
       {/* Footer */}
-      <div className="px-4 py-5 border-t border-gray-800">
+      <div className="px-4 py-4 border-t border-gray-800 space-y-3">
+        <button
+          onClick={onHome}
+          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-gray-500 hover:text-gray-300 hover:bg-gray-800/60 transition-all text-sm"
+        >
+          <Home className="w-4 h-4" />
+          <span>Back to Home</span>
+        </button>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-            U
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${usage.plan === 'pro'
+              ? 'bg-gradient-to-br from-violet-500 to-indigo-600'
+              : 'bg-gradient-to-br from-emerald-400 to-teal-500'
+            }`}>
+            {usage.plan === 'pro' ? '✦' : 'U'}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-gray-200 text-sm font-medium truncate">User</p>
-            <p className="text-gray-500 text-xs truncate">Free Plan</p>
+            <p className="text-gray-500 text-xs truncate">
+              {usage.plan === 'pro' ? 'Pro Plan' : 'Free Plan'} · {usage.mode === 'byok' ? 'BYOK' : 'Managed'}
+            </p>
           </div>
         </div>
       </div>

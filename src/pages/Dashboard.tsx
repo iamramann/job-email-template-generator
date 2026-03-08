@@ -3,15 +3,13 @@ import {
   Briefcase,
   CheckCircle2,
   ChevronRight,
-  Circle,
-  Clock,
   Crown,
   FileSearch,
   Mail,
   Sparkles,
   Target,
   TrendingUp,
-  Zap,
+  Zap
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { Page } from '../components/Sidebar';
@@ -22,59 +20,55 @@ interface DashboardProps {
   onNavigate: (page: Page) => void;
 }
 
-const stats = [
+const STATIC_STATS = [
   {
     label: 'Emails Generated',
-    value: '24',
-    change: '+8 this week',
-    up: true,
+    key: 'emailsUsed' as const,
+    suffix: '',
+    placeholder: '—',
     icon: Mail,
     color: 'from-violet-500 to-indigo-600',
     bg: 'bg-violet-500/10',
     border: 'border-violet-500/20',
     textColor: 'text-violet-400',
+    note: 'this month',
   },
   {
-    label: 'Jobs Applied',
-    value: '12',
-    change: '+3 this week',
-    up: true,
-    icon: Briefcase,
+    label: 'AI JD Parses',
+    key: 'parsesUsed' as const,
+    suffix: '',
+    placeholder: '—',
+    icon: TrendingUp,
     color: 'from-emerald-500 to-teal-600',
     bg: 'bg-emerald-500/10',
     border: 'border-emerald-500/20',
     textColor: 'text-emerald-400',
+    note: 'this month',
   },
   {
-    label: 'Resume Score',
-    value: '78%',
-    change: '+5 since last scan',
-    up: true,
-    icon: FileSearch,
+    label: 'Jobs Applied',
+    key: null,
+    suffix: '',
+    placeholder: 'Coming soon',
+    icon: Briefcase,
     color: 'from-amber-500 to-orange-600',
     bg: 'bg-amber-500/10',
     border: 'border-amber-500/20',
     textColor: 'text-amber-400',
+    note: 'auto-apply coming',
   },
   {
-    label: 'Response Rate',
-    value: '33%',
-    change: '+2% this month',
-    up: true,
-    icon: TrendingUp,
+    label: 'Resume Score',
+    key: null,
+    suffix: '',
+    placeholder: 'Coming soon',
+    icon: FileSearch,
     color: 'from-pink-500 to-rose-600',
     bg: 'bg-pink-500/10',
     border: 'border-pink-500/20',
     textColor: 'text-pink-400',
+    note: 'parser coming',
   },
-];
-
-const recentActivity = [
-  { icon: Mail, label: 'Email generated for', detail: 'Senior React Developer @ Stripe', time: '2h ago', done: true, color: 'text-violet-400' },
-  { icon: Briefcase, label: 'Auto-applied to', detail: 'Full Stack Engineer @ Vercel', time: '5h ago', done: true, color: 'text-emerald-400' },
-  { icon: FileSearch, label: 'Resume scanned —', detail: '3 suggestions ready', time: '1d ago', done: false, color: 'text-amber-400' },
-  { icon: Mail, label: 'Email generated for', detail: 'Backend Engineer @ GitHub', time: '2d ago', done: true, color: 'text-violet-400' },
-  { icon: Briefcase, label: 'Auto-applied to', detail: 'Software Engineer @ Linear', time: '2d ago', done: true, color: 'text-emerald-400' },
 ];
 
 const quickActions = [
@@ -85,6 +79,7 @@ const quickActions = [
     icon: Mail,
     gradient: 'from-violet-600 to-indigo-600',
     shadow: 'shadow-violet-900/30',
+    comingSoon: false,
   },
   {
     page: 'auto-apply' as Page,
@@ -93,6 +88,7 @@ const quickActions = [
     icon: Briefcase,
     gradient: 'from-emerald-600 to-teal-600',
     shadow: 'shadow-emerald-900/30',
+    comingSoon: true,
   },
   {
     page: 'resume-parser' as Page,
@@ -101,6 +97,7 @@ const quickActions = [
     icon: FileSearch,
     gradient: 'from-amber-500 to-orange-600',
     shadow: 'shadow-amber-900/30',
+    comingSoon: true,
   },
 ];
 
@@ -150,24 +147,32 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {stats.map((stat) => {
+        {STATIC_STATS.map((stat) => {
           const Icon = stat.icon;
+          const value = stat.key ? usage[stat.key] : null;
+          const isReal = stat.key !== null;
           return (
             <div
               key={stat.label}
-              className={`rounded-2xl border ${stat.border} ${stat.bg} p-5 flex flex-col gap-4`}
+              className={`rounded-2xl border ${stat.border} ${stat.bg} p-5 flex flex-col gap-4 ${!isReal ? 'opacity-60' : ''}`}
             >
               <div className="flex items-center justify-between">
                 <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg`}>
                   <Icon className="w-5 h-5 text-white" />
                 </div>
-                <div className={`flex items-center gap-1 text-xs font-medium ${stat.textColor}`}>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                  {stat.change}
-                </div>
+                {isReal ? (
+                  <div className={`flex items-center gap-1 text-xs font-medium ${stat.textColor}`}>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                    {stat.note}
+                  </div>
+                ) : (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-gray-800 text-gray-500 border border-gray-700">Soon</span>
+                )}
               </div>
               <div>
-                <p className="text-3xl font-bold text-white leading-none">{stat.value}</p>
+                <p className={`text-3xl font-bold leading-none ${isReal ? 'text-white' : 'text-gray-600'}`}>
+                  {isReal ? (value ?? 0) : stat.placeholder}
+                </p>
                 <p className="text-gray-400 text-sm mt-1">{stat.label}</p>
               </div>
             </div>
@@ -189,17 +194,25 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
               return (
                 <button
                   key={action.page}
-                  onClick={() => onNavigate(action.page)}
-                  className={`w-full flex items-center gap-4 p-4 rounded-2xl bg-gray-900 border border-gray-800 hover:border-gray-700 hover:bg-gray-800/80 transition-all duration-200 group text-left shadow-sm`}
+                  onClick={() => !action.comingSoon && onNavigate(action.page)}
+                  className={`w-full flex items-center gap-4 p-4 rounded-2xl bg-gray-900 border border-gray-800 transition-all duration-200 group text-left shadow-sm ${action.comingSoon
+                    ? 'opacity-60 cursor-not-allowed'
+                    : 'hover:border-gray-700 hover:bg-gray-800/80'
+                    }`}
                 >
                   <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${action.gradient} flex items-center justify-center flex-shrink-0 shadow-lg ${action.shadow}`}>
                     <Icon className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-white font-semibold text-sm">{action.title}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-white font-semibold text-sm">{action.title}</p>
+                      {action.comingSoon && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-gray-800 text-gray-500 border border-gray-700">Soon</span>
+                      )}
+                    </div>
                     <p className="text-gray-500 text-xs mt-0.5">{action.desc}</p>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-gray-400 transition-colors" />
+                  {!action.comingSoon && <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-gray-400 transition-colors" />}
                 </button>
               );
             })}
@@ -219,8 +232,8 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                   {usage.plan === 'pro' ? 'Pro Plan' : 'Free Plan'}
                 </h3>
                 <span className={`text-xs font-semibold px-2 py-0.5 rounded-md border ${isBYOK
-                    ? 'text-blue-400 bg-blue-500/10 border-blue-500/20'
-                    : 'text-violet-400 bg-violet-500/10 border-violet-500/20'
+                  ? 'text-blue-400 bg-blue-500/10 border-blue-500/20'
+                  : 'text-violet-400 bg-violet-500/10 border-violet-500/20'
                   }`}>
                   {isBYOK ? 'BYOK' : 'Managed'}
                 </span>
@@ -295,54 +308,70 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Recent Activity */}
+        {/* Right column */}
         <div className="lg:col-span-3 space-y-4">
           <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-gray-400" />
-            <h2 className="text-white font-semibold text-sm">Recent Activity</h2>
+            <Sparkles className="w-4 h-4 text-gray-400" />
+            <h2 className="text-white font-semibold text-sm">Activity This Month</h2>
           </div>
           <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
-            {recentActivity.map((activity, idx) => {
-              const Icon = activity.icon;
-              return (
-                <div
-                  key={idx}
-                  className={`flex items-center gap-4 px-5 py-4 ${idx !== recentActivity.length - 1 ? 'border-b border-gray-800' : ''
-                    } hover:bg-gray-800/40 transition-colors`}
-                >
-                  <div className="w-9 h-9 rounded-xl bg-gray-800 flex items-center justify-center flex-shrink-0">
-                    <Icon className={`w-4 h-4 ${activity.color}`} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-gray-300 text-sm truncate">
-                      {activity.label}{' '}
-                      <span className="text-white font-medium">{activity.detail}</span>
-                    </p>
-                    <p className="text-gray-600 text-xs mt-0.5">{activity.time}</p>
-                  </div>
-                  {activity.done ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-                  ) : (
-                    <Circle className="w-4 h-4 text-amber-500 flex-shrink-0" />
-                  )}
+            {usage.emailsUsed === 0 && usage.parsesUsed === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-gray-800 flex items-center justify-center">
+                  <Mail className="w-5 h-5 text-gray-600" />
                 </div>
-              );
-            })}
+                <p className="text-gray-600 text-sm text-center">No activity yet.<br />Generate your first email to get started.</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-800">
+                {usage.parsesUsed > 0 && (
+                  <div className="flex items-center gap-4 px-5 py-4">
+                    <div className="w-9 h-9 rounded-xl bg-gray-800 flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="w-4 h-4 text-violet-400" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-gray-300 text-sm">Completed <span className="text-white font-medium">{usage.parsesUsed} AI parse{usage.parsesUsed !== 1 ? 's' : ''}</span></p>
+                      <p className="text-gray-600 text-xs mt-0.5">This month</p>
+                    </div>
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                  </div>
+                )}
+                {usage.emailsUsed > 0 && (
+                  <div className="flex items-center gap-4 px-5 py-4">
+                    <div className="w-9 h-9 rounded-xl bg-gray-800 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-4 h-4 text-violet-400" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-gray-300 text-sm">Generated <span className="text-white font-medium">{usage.emailsUsed} email{usage.emailsUsed !== 1 ? 's' : ''}</span></p>
+                      <p className="text-gray-600 text-xs mt-0.5">This month</p>
+                    </div>
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
-          {/* Progress Bar Card */}
+          {/* Weekly Goal */}
           <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-white font-semibold text-sm">Weekly Goal</h3>
-              <span className="text-gray-400 text-xs">12 / 20 applications</span>
+              <h3 className="text-white font-semibold text-sm">Monthly Parse Goal</h3>
+              <span className="text-gray-400 text-xs">{usage.parsesUsed} / {currentPlan.parseLimit}</span>
             </div>
             <div className="h-2.5 bg-gray-800 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-violet-500 to-indigo-500 rounded-full transition-all duration-500"
-                style={{ width: '60%' }}
+                className={`h-full rounded-full transition-all duration-500 ${parsePercent >= 80 ? 'bg-gradient-to-r from-red-500 to-rose-500'
+                  : parsePercent >= 50 ? 'bg-gradient-to-r from-amber-500 to-orange-500'
+                    : 'bg-gradient-to-r from-violet-500 to-indigo-500'
+                  }`}
+                style={{ width: `${parsePercent}%` }}
               />
             </div>
-            <p className="text-gray-500 text-xs mt-2">60% complete — 8 more to hit your goal</p>
+            <p className="text-gray-500 text-xs mt-2">
+              {parsesLeft > 0
+                ? `${parsesLeft} parses remaining this month`
+                : 'Monthly limit reached — upgrade or switch to BYOK'}
+            </p>
           </div>
         </div>
       </div>

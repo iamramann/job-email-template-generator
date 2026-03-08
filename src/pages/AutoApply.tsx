@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
 import {
-  Search,
-  MapPin,
-  DollarSign,
-  Clock,
   Briefcase,
-  ExternalLink,
-  Sparkles,
-  Filter,
-  CheckCircle2,
-  XCircle,
-  Loader2,
   Building2,
+  CheckCircle2,
   ChevronRight,
-  Zap,
+  Clock,
+  DollarSign,
+  ExternalLink,
+  Filter,
+  Loader2,
+  MapPin,
+  Search,
+  Sparkles,
+  XCircle,
+  Zap
 } from 'lucide-react';
+import React, { useState } from 'react';
 
 type ApplyStatus = 'idle' | 'applying' | 'applied' | 'failed';
 
@@ -168,8 +168,8 @@ const AutoApply: React.FC = () => {
       filter === 'all'
         ? true
         : filter === 'applied'
-        ? j.status === 'applied'
-        : j.status === 'idle' || j.status === 'applying';
+          ? j.status === 'applied'
+          : j.status === 'idle' || j.status === 'applying';
     return matchesSearch && matchesFilter;
   });
 
@@ -225,11 +225,10 @@ const AutoApply: React.FC = () => {
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all capitalize ${
-                filter === f
-                  ? 'bg-violet-600 text-white shadow-md shadow-violet-900/30'
-                  : 'bg-gray-900 border border-gray-700 text-gray-400 hover:border-gray-600 hover:text-gray-300'
-              }`}
+              className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all capitalize ${filter === f
+                ? 'bg-violet-600 text-white shadow-md shadow-violet-900/30'
+                : 'bg-gray-900 border border-gray-700 text-gray-400 hover:border-gray-600 hover:text-gray-300'
+                }`}
             >
               {f}
             </button>
@@ -346,6 +345,20 @@ const AutoApply: React.FC = () => {
           </button>
         </div>
       )}
+
+      {/* Coming Soon Banner */}
+      <div className="flex items-start gap-4 bg-amber-500/8 border border-amber-500/25 rounded-2xl px-5 py-4">
+        <div className="w-9 h-9 rounded-xl bg-amber-500/15 flex items-center justify-center flex-shrink-0">
+          <Zap className="w-4 h-4 text-amber-400" />
+        </div>
+        <div className="flex-1">
+          <p className="text-amber-300 font-semibold text-sm">Coming Soon — Auto Apply</p>
+          <p className="text-amber-400/70 text-xs mt-0.5 leading-relaxed">
+            This feature is currently in development. The job listings below are demo data. Real job search and one-click apply are on the roadmap.
+          </p>
+        </div>
+        <span className="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25">In Progress</span>
+      </div>
 
       {/* AI Notice */}
       <div className="flex items-center gap-3 bg-indigo-900/20 border border-indigo-800/30 rounded-2xl px-5 py-4">

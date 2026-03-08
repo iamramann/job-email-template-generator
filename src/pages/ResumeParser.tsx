@@ -13,7 +13,7 @@ import {
   Star,
   TrendingUp,
   Upload,
-  X,
+  X
 } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 
@@ -105,6 +105,20 @@ const ResumeParser: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Coming Soon Banner */}
+      <div className="flex items-start gap-4 bg-amber-500/8 border border-amber-500/25 rounded-2xl px-5 py-4">
+        <div className="w-9 h-9 rounded-xl bg-amber-500/15 flex items-center justify-center flex-shrink-0">
+          <AlertCircle className="w-4 h-4 text-amber-400" />
+        </div>
+        <div className="flex-1">
+          <p className="text-amber-300 font-semibold text-sm">Coming Soon — Resume Parser</p>
+          <p className="text-amber-400/70 text-xs mt-0.5 leading-relaxed">
+            This feature is in development. The resume data and suggestions below are demo content. Real file parsing and AI scoring are on the roadmap.
+          </p>
+        </div>
+        <span className="flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25">In Progress</span>
+      </div>
+
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
@@ -131,8 +145,8 @@ const ResumeParser: React.FC = () => {
             onDragLeave={() => setIsDragging(false)}
             onClick={() => fileInputRef.current?.click()}
             className={`relative flex flex-col items-center justify-center gap-5 py-20 rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-200 ${isDragging
-                ? 'border-violet-500 bg-violet-500/5'
-                : 'border-gray-700 bg-gray-900 hover:border-violet-600/60 hover:bg-violet-500/5'
+              ? 'border-violet-500 bg-violet-500/5'
+              : 'border-gray-700 bg-gray-900 hover:border-violet-600/60 hover:bg-violet-500/5'
               }`}
           >
             <input
@@ -340,7 +354,7 @@ const ResumeParser: React.FC = () => {
                 <div
                   key={s.id}
                   className={`bg-gray-900 border rounded-xl p-4 transition-all ${s.type === 'error' ? 'border-red-900/50' :
-                      s.type === 'warning' ? 'border-amber-900/50' : 'border-gray-800'
+                    s.type === 'warning' ? 'border-amber-900/50' : 'border-gray-800'
                     }`}
                 >
                   <div className="flex items-start gap-3">
