@@ -83,12 +83,12 @@ const quickActions = [
   },
   {
     page: 'auto-apply' as Page,
-    title: 'Auto Apply',
-    desc: 'Find and apply to matching jobs',
+    title: 'Job Search',
+    desc: 'Browse live jobs from 1000+ boards',
     icon: Briefcase,
     gradient: 'from-emerald-600 to-teal-600',
     shadow: 'shadow-emerald-900/30',
-    comingSoon: true,
+    comingSoon: false,
   },
   {
     page: 'resume-parser' as Page,

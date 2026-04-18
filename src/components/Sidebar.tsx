@@ -23,7 +23,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'email-templates', label: 'Email Templates', icon: Mail, badge: 'AI' },
-  { id: 'auto-apply', label: 'Auto Apply', icon: Briefcase, badge: 'AI' },
+  { id: 'auto-apply', label: 'Job Search', icon: Briefcase, badge: 'Live' },
   { id: 'resume-parser', label: 'Resume Parser', icon: FileSearch, badge: 'AI' },
 ];
 
@@ -104,8 +104,8 @@ const Sidebar: React.FC<SidebarProps> = ({ activePage, onNavigate, onHome }) => 
         </button>
         <div className="flex items-center gap-3">
           <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${usage.plan === 'pro'
-              ? 'bg-gradient-to-br from-violet-500 to-indigo-600'
-              : 'bg-gradient-to-br from-emerald-400 to-teal-500'
+            ? 'bg-gradient-to-br from-violet-500 to-indigo-600'
+            : 'bg-gradient-to-br from-emerald-400 to-teal-500'
             }`}>
             {usage.plan === 'pro' ? '✦' : 'U'}
           </div>
